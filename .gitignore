@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+syntax: glob
+_[Rr]eSharper*
+[Bb]in/
+[Oo]bj/
+[Mm]etric[Rr]esults/
+*.user
+*.DotSettings
+*.suo
+*.swp
+.vs/
