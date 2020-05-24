@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Input;
 using CommBindWPF.Models;
 
@@ -24,7 +25,7 @@ namespace CommBindWPF.ViewModels
         }
 
         // Data Model
-        JSONModel jsonModel;
+        private JSONModel jsonModel;
 
         public Publisher()
         {
@@ -33,7 +34,7 @@ namespace CommBindWPF.ViewModels
         }
 
         // internal default values regardless Data Model
-        private string _someText = "some default text";
+        private string _someText = "Let's start!";
         private string _butText = "Click me!";
         private int _progressVal = 0;
 
@@ -96,6 +97,28 @@ namespace CommBindWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Command to terminate the App
+        /// </summary>
+        public ICommand ReactOnExitButton
+        {
+            get
+            {
+                return new DelegateCommand(AppExitCommand);
+            }
+        }
+
+        /// <summary>
+        /// Command to reset App state
+        /// </summary>
+        public ICommand ReactOnResetButton
+        {
+            get
+            {
+                return new DelegateCommand(AppResetCommand);
+            }
+        }
+
         // Action for the Command object. We use Model for data retrieval.
         // ICommand.Execute() will call this through Action delegate
         private void UpdateSomeText()
@@ -112,6 +135,26 @@ namespace CommBindWPF.ViewModels
                 SomeText = _str;
                 ProgressVal = _val;
             }
+        }
+
+        /// <summary>
+        /// Action to terminate the App
+        /// </summary>
+        private void AppExitCommand()
+        {
+            Application.Current.MainWindow.Close();
+        }
+
+        /// <summary>
+        /// Action to reset App's State
+        /// </summary>
+        private void AppResetCommand()
+        {
+            jsonModel.Dispose();
+            jsonModel = new JSONModel();
+            SomeText = "Start over!";
+            ButText = "Push me!";
+            ProgressVal = 0;
         }
 
         protected virtual void Dispose(bool disposing)

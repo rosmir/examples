@@ -12,7 +12,7 @@ namespace CommBindWPF.Models
         private bool disposedValue;
 
         // some predefined values in JSON string array
-        System.String jsonString = @"{
+        private readonly string jsonString = @"{
                 ""TextArray"": [ ""Nice day"",
                                  ""Wonderful day"",
                                  ""Joyful day"",
@@ -66,9 +66,9 @@ namespace CommBindWPF.Models
         }
 
         // read next array element (with String type) by memorizing the positions
-        public int NextString(out String stringValue, out int progressVal)
+        public int NextString(out string stringValue, out int progressVal)
         {
-            stringValue = String.Empty;
+            stringValue = string.Empty;
             progressVal = 0;
             int retVal = -1;
 
