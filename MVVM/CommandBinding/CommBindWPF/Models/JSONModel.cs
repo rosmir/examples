@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using System.Text.Json;
 
@@ -40,12 +39,8 @@ namespace CommBindWPF.Models
 
         public JSONModel()
         {
-            byte[] bytes = Encoding.UTF8.GetBytes(jsonString);
-            var jsonStringStream = new MemoryStream(bytes);
-            var buffer = new byte[4096]; // we should allocate large enough buffer
-            MaxBuffSize = jsonStringStream.Read(buffer);
-            JsonBuffer = new System.Buffers.ReadOnlySequence<byte>(buffer, 0, MaxBuffSize);
-            jsonStringStream.Close();
+            JsonBuffer = new System.Buffers.ReadOnlySequence<byte>(Encoding.UTF8.GetBytes(jsonString));
+            MaxBuffSize = (int)JsonBuffer.Length;
 
             // Search for "TextArray" property name
             var reader = new Utf8JsonReader(JsonBuffer, isFinalBlock: false, CurPosition);
