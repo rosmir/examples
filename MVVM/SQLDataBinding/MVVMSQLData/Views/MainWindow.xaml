@@ -1,0 +1,22 @@
+﻿<Window x:Class="MVVMSQLData.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MVVMSQLData"
+        xmlns:Views="clr-namespace:MVVMSQLData.Views"
+        xmlns:ViewModels="clr-namespace:MVVMSQLData.ViewModels"
+        mc:Ignorable="d"
+        Title="Main UI Window"
+        Height="450"
+        Width="800"
+        SizeToContent="WidthAndHeight"
+        MinWidth="600"
+        MinHeight="300">
+
+  <Window.DataContext>
+    <ViewModels:Publisher/>
+  </Window.DataContext>
+
+  <Views:ButtonTextControl/>
+</Window>

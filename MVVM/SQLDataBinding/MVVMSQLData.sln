@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+Project("{df143a91-ebe4-418b-b7c8-caa34edadd57}") = "MVVMSQLData", "MVVMSQLData\MVVMSQLData.csproj", "{51d44f49-476b-478a-9b74-acad0f90e358}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{51d44f49-476b-478a-9b74-acad0f90e358}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51d44f49-476b-478a-9b74-acad0f90e358}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51d44f49-476b-478a-9b74-acad0f90e358}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51d44f49-476b-478a-9b74-acad0f90e358}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4fef74a4-0e07-441c-a675-617501135538}
+	EndGlobalSection
+EndGlobal

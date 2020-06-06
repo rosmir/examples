@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Copyright (c) Stepan Baranov (stephan@baranoff.dev). All rights reserved.
+// Licensed under the BSD 3-Clause Clear License. See LICENSE file in the project root for full license information.
+
+using System;
 using System.Text;
 using System.Text.Json;
 

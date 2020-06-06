@@ -3,13 +3,15 @@
 
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using CommBindWPF.Models;
+using MVVMSQLData.Models;
+using MVVMSQLData.Views;
 
 //MVVM: View Models
-namespace CommBindWPF.ViewModels
+namespace MVVMSQLData.ViewModels
 {
     public class Publisher : System.ComponentModel.INotifyPropertyChanged, System.IDisposable
     {
@@ -28,12 +30,12 @@ namespace CommBindWPF.ViewModels
         }
 
         // Data Model
-        private JSONModel jsonModel;
+        private readonly SQLDataModel sqlDataModel;
 
         public Publisher()
         {
             // we prepare an instance of Data Model to provide some data
-            jsonModel = new JSONModel();
+            sqlDataModel = SQLDataModel.Instance;
         }
 
         // internal default values regardless Data Model
@@ -54,6 +56,13 @@ namespace CommBindWPF.ViewModels
                 // we should announce that the Property was changed. Then, subscribed WPF control will update its value.
                 NotifyPropertyChangedEvent();
             }
+        }
+
+        // WPF User control will bind to this Property (Data Binding)
+        public string InputText
+        {
+            get;
+            set;
         }
 
         // WPF User control will bind to this Property (Data Binding)
@@ -86,6 +95,25 @@ namespace CommBindWPF.ViewModels
             }
         }
 
+        /// <summary>
+        /// Command to terminate the App
+        /// </summary>
+        public ICommand ReactOnExitButton
+        {
+            get
+            {
+                return new DelegateCommand(AppExitCommand);
+            }
+        }
+
+        /// <summary>
+        /// Command's action to terminate the App
+        /// </summary>
+        private void AppExitCommand()
+        {
+            Application.Current.MainWindow.Close();
+        }
+
         // WPF User control will bind to this Property (Command Binding).
         // As the result the listening object (ICommand interface) will be created.
         // Then this object will be subscribed to the click events of WPF User control.
@@ -100,33 +128,11 @@ namespace CommBindWPF.ViewModels
             }
         }
 
-        /// <summary>
-        /// Command to terminate the App
-        /// </summary>
-        public ICommand ReactOnExitButton
-        {
-            get
-            {
-                return new DelegateCommand(AppExitCommand);
-            }
-        }
-
-        /// <summary>
-        /// Command to reset App state
-        /// </summary>
-        public ICommand ReactOnResetButton
-        {
-            get
-            {
-                return new DelegateCommand(AppResetCommand);
-            }
-        }
-
         // Action for the Command object. We use Model for data retrieval.
         // ICommand.Execute() will call this through Action delegate
         private void UpdateSomeText()
         {
-            int retVal = jsonModel.NextString(out string _str, out int _val);
+            int retVal = sqlDataModel.NextString(out string _str, out int _val);
             if (retVal < 0)
             {
                 SomeText = "No string values any more... You can stop this app!";
@@ -141,11 +147,14 @@ namespace CommBindWPF.ViewModels
         }
 
         /// <summary>
-        /// Action to terminate the App
+        /// Command to reset App state
         /// </summary>
-        private void AppExitCommand()
+        public ICommand ReactOnResetButton
         {
-            Application.Current.MainWindow.Close();
+            get
+            {
+                return new DelegateCommand(AppResetCommand);
+            }
         }
 
         /// <summary>
@@ -153,11 +162,57 @@ namespace CommBindWPF.ViewModels
         /// </summary>
         private void AppResetCommand()
         {
-            jsonModel.Dispose();
-            jsonModel = new JSONModel();
+            sqlDataModel.Reset();
             SomeText = "Start over!";
             ButText = "Push me!";
             ProgressVal = 0;
+        }
+
+        /// <summary>
+        /// Command to open new dialog to add text to SQLite DB
+        /// </summary>
+        public ICommand ReactOnAddButton
+        {
+            get
+            {
+                return new DelegateCommand(ShowAddTextDialog);
+            }
+        }
+
+        /// <summary>
+        /// Command's action to display new dialog to add text
+        /// </summary>
+        private void ShowAddTextDialog()
+        {
+            Views.DialogWindow _dialogWindow = new Views.DialogWindow();
+            _dialogWindow.ShowDialog();
+        }
+
+        /// <summary>
+        /// Command to accept new text for SQLite DB
+        /// </summary>
+        public ICommand ReactOnOKButton
+        {
+            get
+            {
+                return new DelegateCommand(AddTextCommand);
+            }
+        }
+
+        /// <summary>
+        /// Command's action to accept new text for SQLite DB
+        /// </summary>
+        private void AddTextCommand()
+        {
+            if (!string.IsNullOrEmpty(this.InputText))
+            {
+                sqlDataModel.AddText(this.InputText);
+            }
+            else
+                return;
+
+            // let's close Dialog window to return to Main UI window
+            Application.Current.Windows.OfType<DialogWindow>().First().Close();
         }
 
         protected virtual void Dispose(bool disposing)
@@ -167,7 +222,7 @@ namespace CommBindWPF.ViewModels
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects)
-                    jsonModel.Dispose();
+                    sqlDataModel.Dispose();
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
