@@ -11,9 +11,9 @@
     <Copyright>(C) 2020, Stepan Baranov</Copyright>
     <AssemblyVersion>1.0.0.1</AssemblyVersion>
     <FileVersion>1.0.0.1</FileVersion>
-    <Description>WPF Command Binding example</Description>
+    <Description>WPF SQLite Binding example</Description>
     <PackageProjectUrl>http://www.baranoff.dev/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/rosmir/examples/tree/master/MVVM/CommandBinding/</RepositoryUrl>
+    <RepositoryUrl>https://github.com/rosmir/examples/tree/master/MVVM/SQLDataBinding/</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -30,8 +30,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.5">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

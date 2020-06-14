@@ -35,14 +35,29 @@ namespace MVVMSQLData.Models
         private int CurIndex { get; set; } = 0;
         private int MaxIndex { get; set; } = 0;
 
-        //Singleton pattern
-        private static readonly SQLDataModel instance = new SQLDataModel();
+        //Lazy Singleton pattern
+        //see: https://csharpindepth.com/articles/singleton
+        private static volatile Lazy<SQLDataModel> instance = new Lazy<SQLDataModel>(() => new SQLDataModel());
+        //see: https://riptutorial.com/csharp/example/28712/disposing-of-the-singleton-instance-when-it-is-no-longer-needed
+        private static bool IsInstanceAlive
+        {
+            get
+            {
+                if (instance.IsValueCreated)
+                    return true;
+                else
+                    return false;
+            }
+        }
 
+        // https://docs.microsoft.com/en-us/ef/ef6/fundamentals/working-with-dbcontext
+        // The DBcontext is not thread-safe and, thus, this class is not thread-safe also.
+        // We want to make sure that only single instance of this class can be loaded.
         public static SQLDataModel Instance
         {
             get
             {
-                return instance;
+                return instance.Value;
             }
         }
 
@@ -61,6 +76,7 @@ namespace MVVMSQLData.Models
                 db.Database.EnsureCreated();
                 if (!db.TblDayText.Any())
                 {
+                    // the order in String Array might be different from the order in SQL table
                     foreach (var s in TextArray)
                     {
                         db.TblDayText.Add(new DayText { DayTextStr = s });
@@ -83,6 +99,7 @@ namespace MVVMSQLData.Models
             if (CurIndex > MaxIndex)
                 return retVal;
 
+            // https://docs.microsoft.com/en-us/ef/ef6/fundamentals/working-with-dbcontext
             using (var db = new SimpleDBContext())
             {
                 // https://docs.microsoft.com/en-us/ef/ef6/querying/
@@ -96,7 +113,7 @@ namespace MVVMSQLData.Models
                 }
                 else
                 {
-                    CurIndex = MaxIndex;
+                    CurIndex = MaxIndex + 1;
                 }
             }
 
@@ -143,6 +160,7 @@ namespace MVVMSQLData.Models
                 if (disposing)
                 {
                     // TODO: dispose managed state (managed objects)
+                    instance = null;
                 }
 
                 // TODO: free unmanaged resources (unmanaged objects) and override finalizer
@@ -151,11 +169,16 @@ namespace MVVMSQLData.Models
             }
         }
 
+#pragma warning disable CA1063 // Implement IDisposable Correctly
         public void Dispose()
+#pragma warning restore CA1063 // Implement IDisposable Correctly
         {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
+            if (IsInstanceAlive)
+            {
+                // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+                Dispose(disposing: true);
+                GC.SuppressFinalize(this);
+            }
         }
     }
 }
