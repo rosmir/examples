@@ -27,8 +27,7 @@ namespace MVVMSQLData.Models
                                  "Happy day",
                                  "Fun day",
                                  "Blessed day",
-                                 "Peaceful day"
-            };
+                                 "Peaceful day" };
 
         private bool disposedValue;
 
@@ -37,7 +36,7 @@ namespace MVVMSQLData.Models
 
         //Lazy Singleton pattern
         //see: https://csharpindepth.com/articles/singleton
-        private static volatile Lazy<SQLDataModel> instance = new Lazy<SQLDataModel>(() => new SQLDataModel());
+        private static volatile Lazy<SQLDataModel> instance;
         //see: https://riptutorial.com/csharp/example/28712/disposing-of-the-singleton-instance-when-it-is-no-longer-needed
         private static bool IsInstanceAlive
         {
@@ -57,6 +56,9 @@ namespace MVVMSQLData.Models
         {
             get
             {
+                if (instance == null)
+                    instance = new Lazy<SQLDataModel>(() => new SQLDataModel());
+
                 return instance.Value;
             }
         }
