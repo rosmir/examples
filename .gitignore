@@ -11,3 +11,4 @@ _[Rr]eSharper*
 *.suo
 *.swp
 .vs/
+/.gitconfig
