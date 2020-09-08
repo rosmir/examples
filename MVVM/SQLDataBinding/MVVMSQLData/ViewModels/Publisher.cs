@@ -41,7 +41,7 @@ namespace MVVMSQLData.ViewModels
         // internal default values regardless Data Model
         private string _someText = "Let's start!";
         private string _butText = "Click me!";
-        private int _progressVal = 0;
+        private int _progressVal;
 
         // WPF User control will bind to this Property (Data Binding)
         public string SomeText

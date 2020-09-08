@@ -35,10 +35,10 @@ namespace CommBindWPF.Models
             }";
 
         private System.Buffers.ReadOnlySequence<byte> JsonBuffer { get; set; }
-        private System.Text.Json.JsonReaderState CurPosition { get; set; } = default;
-        private SequencePosition BuffPosition { get; set; } = default;
-        private bool EndOfJSON { get; set; } = false;
-        private int MaxBuffSize { get; set; } = 0;
+        private System.Text.Json.JsonReaderState CurPosition { get; set; }
+        private SequencePosition BuffPosition { get; set; }
+        private bool EndOfJSON { get; set; }
+        private int MaxBuffSize { get; set; }
 
         public JSONModel()
         {

@@ -12,3 +12,4 @@ _[Rr]eSharper*
 *.swp
 .vs/
 /.gitconfig
+MVVM/SQLDataBinding/MVVMSQLData/SimpleDB.db

@@ -31,8 +31,8 @@ namespace MVVMSQLData.Models
 
         private bool disposedValue;
 
-        private int CurIndex { get; set; } = 0;
-        private int MaxIndex { get; set; } = 0;
+        private int CurIndex { get; set; }
+        private int MaxIndex { get; set; }
 
         //Lazy Singleton pattern
         //see: https://csharpindepth.com/articles/singleton
