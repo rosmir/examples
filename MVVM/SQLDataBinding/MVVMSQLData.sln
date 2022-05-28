@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
+# Visual Studio Version 17
 Project("{df143a91-ebe4-418b-b7c8-caa34edadd57}") = "MVVMSQLData", "MVVMSQLData\MVVMSQLData.csproj", "{51d44f49-476b-478a-9b74-acad0f90e358}"
 EndProject
 Global

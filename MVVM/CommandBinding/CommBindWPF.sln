@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
+# Visual Studio Version 17
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommBindWPF", "CommBindWPF\CommBindWPF.csproj", "{76B56CFE-8BC1-4A4A-B4DB-C2BA1CFBF560}"
 EndProject
 Global

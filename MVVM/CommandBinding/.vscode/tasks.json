@@ -32,9 +32,8 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/CommBindWPF/CommBindWPF.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "--project",
+                "${workspaceFolder}/CommBindWPF/CommBindWPF.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
