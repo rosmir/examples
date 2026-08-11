@@ -24,22 +24,19 @@ Each submission the label review involves matching what is printed on the label 
 
 ```mermaid
 flowchart TD
-    A([Agent uploads\nlabel image + form data]) --> B[Next.js Frontend\nUploadForm.tsx]
-    B --> C{POST /api/verify\nFormData}
-    C --> D[API Route\nroute.ts]
-    D --> E[GPT-4o-mini Vision\nextract.ts]
-    E -->|Single structured\nJSON call| F[(OpenAI API)]
+    A([Agent: uploads image + form data]) --> B[UploadForm.tsx]
+    B --> C[POST /api/verify]
+    C --> D[route.ts]
+    D --> E[extract.ts]
+    E -->|one structured JSON call| F[(OpenAI API<br/>gpt-4o-mini)]
     F -->|ExtractedLabel JSON| E
-    E --> G[Validation Engine\nvalidate.ts]
-    G --> H{Field-by-field\ncomparison}
-    H --> I[matchers.ts\nfuzzyMatch / strictMatch\nabvMatch / netContentsMatch]
+    E --> G[validate.ts]
+    G --> H{field-by-field comparison}
+    H --> I[matchers.ts<br/>fuzzy / strict / abv / netContents]
     I --> G
-    G --> J[ValidationReport\nPASS · WARNING · FAIL]
-    J --> K[ComplianceReport.tsx\nField table + overall verdict]
+    G --> J[ValidationReport<br/>PASS / WARNING / FAIL]
+    J --> K[ComplianceReport.tsx]
     K --> A
-
-    style F fill:#10a37f,color:#fff
-    style J fill:#1e40af,color:#fff
 ```
 
 ### Why this architecture
