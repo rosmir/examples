@@ -24,28 +24,44 @@ export async function extractLabelData(
 ): Promise<ExtractedLabel> {
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4o',
+  const params = {
+    model: 'gpt-4o-mini' as const,
     max_tokens: 1200,
-    response_format: { type: 'json_object' },
+    response_format: { type: 'json_object' as const },
     messages: [
       {
-        role: 'user',
+        role: 'user' as const,
         content: [
-          { type: 'text', text: EXTRACTION_PROMPT },
+          { type: 'text' as const, text: EXTRACTION_PROMPT },
           {
-            type: 'image_url',
+            type: 'image_url' as const,
             image_url: {
               url: `data:${mimeType};base64,${imageBase64}`,
-              detail: 'high',
+              detail: 'high' as const,
             },
           },
         ],
       },
     ],
-  });
+  };
 
-  const content = response.choices[0].message.content;
+  // retry up to 3 times on TPM rate-limit; each window resets within ~8s
+  let response;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      response = await openai.chat.completions.create(params);
+      break;
+    } catch (err: unknown) {
+      const status = (err as { status?: number }).status;
+      if (status === 429 && attempt < 2) {
+        await new Promise((r) => setTimeout(r, (attempt + 1) * 8000));
+      } else {
+        throw err;
+      }
+    }
+  }
+
+  const content = response!.choices[0].message.content;
   if (!content) throw new Error('Empty response from GPT-4o');
   return JSON.parse(content) as ExtractedLabel;
 }

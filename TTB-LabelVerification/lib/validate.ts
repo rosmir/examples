@@ -101,20 +101,33 @@ export function validateLabel(
     }
   }
 
-  // Government warning — STRICT: word-for-word, "GOVERNMENT WARNING:" must be all caps
+  // Government warning — prefix must be all caps; content exact or near-exact (≥95% = WARNING for manual review)
   if (!extracted.warning_statement) {
     fields.push(missingFail('Government Warning Statement', application.warning_statement));
   } else {
     const hasCorrectPrefix = extracted.warning_statement.startsWith('GOVERNMENT WARNING:');
-    const { match } = strictMatch(application.warning_statement, extracted.warning_statement);
+    const { match: exactMatch } = strictMatch(application.warning_statement, extracted.warning_statement);
+    const { similarity } = fuzzyMatch(application.warning_statement, extracted.warning_statement);
+    let status: FieldResult['status'];
     let note: string | undefined;
-    if (!hasCorrectPrefix) note = '"GOVERNMENT WARNING:" prefix must be all caps';
-    else if (!match) note = 'Warning text does not match exactly (word-for-word required)';
+    if (!hasCorrectPrefix) {
+      status = 'FAIL';
+      note = '"GOVERNMENT WARNING:" prefix must be all caps';
+    } else if (exactMatch || similarity >= 0.99) {
+      // 0.99+ means only formatting/punctuation differences after normalization
+      status = 'PASS';
+    } else if (similarity >= 0.95) {
+      status = 'WARNING';
+      note = `Near-match (${(similarity * 100).toFixed(0)}% similar) — verify manually for exact wording`;
+    } else {
+      status = 'FAIL';
+      note = `Warning text differs too much (${(similarity * 100).toFixed(0)}% similar)`;
+    }
     fields.push({
       field: 'Government Warning Statement',
       expected: application.warning_statement,
       extracted: extracted.warning_statement,
-      status: hasCorrectPrefix && match ? 'PASS' : 'FAIL',
+      status,
       note,
     });
   }

@@ -14,6 +14,10 @@ out/
 *.tsbuildinfo
 next-env.d.ts
 
+# test label images and data (binary assets, reproducible from source)
+tests/labels/
+tests/batch_mixed.csv
+
 # OS
 .DS_Store
 Thumbs.db
