@@ -13,3 +13,5 @@ _[Rr]eSharper*
 .vs/
 /.gitconfig
 MVVM/SQLDataBinding/MVVMSQLData/SimpleDB.db
+.vercel
+.env*
